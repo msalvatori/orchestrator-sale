@@ -1,0 +1,20 @@
+version: "3.5"
+services:
+  db:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=example
+      - MYSQL_DATABASE=saga
+    networks:
+      - net-backend
+    ports:
+      - 3306:3306          
+    expose:
+      - "3306"
+    volumes:
+      - "./scripts/schema.sql:/docker-entrypoint-initdb.d/1.sql"
+      - "./scripts/table.sql:/docker-entrypoint-initdb.d/2.sql"
+
+networks:
+  net-backend:
+    driver: bridge

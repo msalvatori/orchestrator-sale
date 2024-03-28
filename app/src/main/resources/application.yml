@@ -1,0 +1,27 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/saga_sale
+    username: root
+    password: example
+
+  #Kafka Properties
+  kafka:
+    bootstrap-servers: "localhost:9092"
+    #Kafka Producer Properties
+    producer:
+      topic: "tp-saga-orchestrator"
+      group-id: "sale"
+    consumer:
+      bean-cancel: "bean-cancel"
+      bean-credit: "bean-finalize"
+      bean-receiver-cancel: "receiver-bean-receiver-cancel"
+      bean-receiver-credit: "receiver-bean-inventory-finalize"
+      topic: "tp-saga-sale"
+
+  #JPA Properties
+  jpa:
+    hibernate:
+      ddl-auto: update
