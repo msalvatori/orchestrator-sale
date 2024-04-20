@@ -34,8 +34,6 @@ public class SendCreatedSaleAdapter implements SendCreate {
                         sale,
                         senderResult.recordMetadata().offset()))
                 .subscribe();
-       return Mono.just(DataResponseDto.builder()
-                .sale(sale)
-                .build());
+       return Mono.just(new DataResponseDto(sale));
     }
 }

@@ -12,7 +12,7 @@ public class FindSaleByIdUserCaseImpl implements FindSaleByIdUseCase {
 
     private final FindSaleById findSaleById;
      @Override
-    public Mono<Sale> find(final Integer id) {
+    public Mono<Sale> execute(final Integer id) {
         return findSaleById.find(id);
     }
 

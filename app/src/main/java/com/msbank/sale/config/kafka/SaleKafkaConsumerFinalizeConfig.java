@@ -26,7 +26,6 @@ import static org.apache.kafka.clients.consumer.ConsumerConfig.AUTO_OFFSET_RESET
 @Configuration
 public class SaleKafkaConsumerFinalizeConfig {
 
-
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrap;
 

@@ -27,8 +27,10 @@ public class ReceiveSaleFinalizeConsumer {
     @Autowired
     @Qualifier("${spring.kafka.consumer.bean-finalize}")
     private  ReactiveKafkaConsumerTemplate<String, SaleMessage> reactiveKafkaConsumerTemplate;
+
     @Autowired
     private  FinalizeSaleUseCase finalizeSale;
+
     @Autowired
     private  FindSaleByIdUseCase findSaleByIdUseCase;
 
@@ -39,9 +41,9 @@ public class ReceiveSaleFinalizeConsumer {
                 .map(ConsumerRecord<String, SaleMessage>::value)
                 .doOnNext(saleMessage -> {
                     if(SaleEvent.FINALIZE_SALE.equals(saleMessage.getSaleEvent())) {
-                        findSaleByIdUseCase.find(saleMessage.getSale().getId())
+                        findSaleByIdUseCase.execute(saleMessage.getSale().getId())
                                 .doOnSuccess(sale -> {
-                                    finalizeSale.finalize(saleMessage.getSale());
+                                    finalizeSale.execute(saleMessage.getSale());
                                 }).block();;
                         LOGGER.info(FINALIZANDO_A_VENDA);
                         LOGGER.info(VENDA_FINALIZADA_C_SUCESSO);

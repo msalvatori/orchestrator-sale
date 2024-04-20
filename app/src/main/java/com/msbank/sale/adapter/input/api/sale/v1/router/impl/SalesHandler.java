@@ -5,9 +5,8 @@ import com.msbank.sale.adapter.input.api.sale.v1.mapper.SaleMapper;
 import com.msbank.sale.adapter.input.api.sale.v1.router.SalesInterface;
 import com.msbank.sale.adapter.input.api.sale.v1.validator.HandlerValidator;
 import com.msbank.sale.core.output.service.sale.dto.response.DataResponseDto;
-import com.msbank.sale.core.usecase.CreateSaleUseCase;
+import com.msbank.sale.core.usecase.WorkFlowSaleUseCase;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -18,7 +17,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class SalesHandler implements HandlerValidator, SalesInterface {
 
-    private final CreateSaleUseCase createSaleUseCase;
+    private final WorkFlowSaleUseCase workFlowSaleUseCase;
     @Override
     public Mono<ServerResponse> startSales(ServerRequest serverRequest) {
         return serverRequest.bodyToMono(SaleRequestDto.class)
@@ -26,6 +25,6 @@ public class SalesHandler implements HandlerValidator, SalesInterface {
                 .flatMap(SaleMapper::saleRequestDtoToSale)
                 .flatMap(body -> fieldsValidation(body).thenReturn(body)
                         .flatMap(sale -> ServerResponse.ok().body(BodyInserters.fromPublisher(
-                                createSaleUseCase.start(sale), DataResponseDto.class))));
+                                workFlowSaleUseCase.execute(sale), DataResponseDto.class))));
     }
 }
